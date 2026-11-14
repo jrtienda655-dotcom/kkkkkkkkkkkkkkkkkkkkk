@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JR_tienda</title>
+<meta name="theme-color" content="#0f3d4a">
+<style>
+:root{--bg:#f4f6f7;--card:#fff;--ink:#14202b;--mute:#5d6b78;--line:#dde3e8;--brand:#0f3d4a;--brand2:#165b6d;--gold:#e3a72f;--wa:#17a34a;--wa-ink:#fff;--err:#b3261e;
+color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1419;--card:#16202a;--ink:#eaf0f4;--mute:#9aabb8;--line:#27343f;--brand:#0f3d4a;--brand2:#2a8199;--err:#ff8a80;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d1419;--card:#16202a;--ink:#eaf0f4;--mute:#9aabb8;--line:#27343f;--brand2:#2a8199;--err:#ff8a80;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 system-ui,-apple-system,sans-serif;min-height:100vh}
+h1,h2,h3,.brand b{font-family:system-ui,-apple-system,sans-serif;font-weight:800;margin:0;letter-spacing:-.02em}
+button,input,textarea{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--brand);color:#fff}
+header.top .in{max-width:1100px;margin:auto;display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:10px 16px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:auto}
+.logo{width:42px;height:42px;border-radius:12px;background:var(--gold);color:#1b1405;display:grid;place-items:center;font-weight:800;font-size:19px;letter-spacing:-.04em}
+.brand b{font-size:20px}
+.nav{display:flex;flex-wrap:wrap;gap:6px}
+.nav a,.nav button{color:#fff;text-decoration:none;font-weight:600;padding:8px 12px;border-radius:10px;background:none;border:0;cursor:pointer}
+.nav a:hover,.nav button:hover{background:rgba(255,255,255,.14)}
+main{max-width:1100px;margin:auto;padding:20px 16px 90px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:14px 22px;font-weight:700;cursor:pointer;text-decoration:none;font-size:16px;min-height:48px}
+.btn.main{background:var(--gold);color:#1b1405}
+.btn.wa{background:var(--wa);color:var(--wa-ink)}
+.btn.line{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.btn.danger{background:transparent;border:1.5px solid var(--err);color:var(--err)}
+.btn.sm{padding:9px 14px;min-height:40px;font-size:14px;border-radius:11px}
+.hero{background:linear-gradient(150deg,var(--brand) 0%,var(--brand2) 100%);color:#fff;border-radius:26px;padding:clamp(28px,6vw,64px) clamp(20px,5vw,56px);display:grid;gap:22px;justify-items:start}
+.hero .logo{width:72px;height:72px;font-size:32px;border-radius:20px}
+.hero h1{font-size:clamp(34px,7vw,60px);line-height:1.05}
+.hero p{margin:0;max-width:46ch;font-size:18px;opacity:.92}
+.hero .acts{display:grid;gap:12px;width:min(100%,360px)}
+.hero small{opacity:.85}
+.promo-bar{background:rgba(227,167,47,.18);border:1.5px solid var(--gold);color:var(--ink);padding:12px 16px;border-radius:16px;margin-bottom:18px;font-weight:600;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.sec{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:30px 0 16px;flex-wrap:wrap}
+.sec h2{font-size:26px}.sec p{margin:2px 0 0;color:var(--mute)}
+.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.badge-new{position:absolute;top:12px;left:12px;background:var(--gold);color:#1b1405;font-weight:800;font-size:12px;padding:4px 10px;border-radius:99px;text-transform:uppercase;letter-spacing:.04em}
+.card .ph{aspect-ratio:1/1;background:var(--line);display:block;width:100%;object-fit:cover;cursor:pointer}
+.card .bd{padding:14px 14px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card h3{font-size:17px;line-height:1.25;overflow-wrap:anywhere}
+.price{font-weight:800;font-size:21px;color:var(--brand2)}
+.sp{color:var(--mute);font-size:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.card .btn{margin-top:auto}
+.empty{background:var(--card);border:1.5px dashed var(--line);border-radius:20px;padding:36px 20px;text-align:center;display:grid;gap:14px;justify-items:center}
+.detail{display:grid;gap:22px}
+@media(min-width:800px){.detail{grid-template-columns:1.1fr 1fr;align-items:start}}
+.detail img{width:100%;border-radius:20px;background:var(--line);max-height:640px;object-fit:cover}
+.detail h1{font-size:clamp(26px,4vw,38px);line-height:1.15;overflow-wrap:anywhere}
+.detail .specs{white-space:pre-wrap;color:var(--mute);overflow-wrap:anywhere}
+.qty-box{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:16px;display:grid;gap:10px}
+.qty-ctrl{display:flex;align-items:center;gap:12px}
+.qty-ctrl button{width:42px;height:42px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);font-weight:800;font-size:20px;cursor:pointer}
+.qty-ctrl span{font-weight:800;font-size:20px;min-width:32px;text-align:center}
+.disc-tag{display:inline-block;background:var(--wa);color:#fff;font-size:13px;font-weight:700;padding:3px 10px;border-radius:99px}
+.stick{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom,0px));display:grid}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;max-width:520px;margin:20px auto;display:grid;gap:14px}
+label{font-weight:700;font-size:14px;display:grid;gap:6px}
+input[type=text],input[type=email],input[type=password],input[type=number],textarea{width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg)}
+textarea{min-height:120px;resize:vertical}
+.err{color:var(--err);font-size:14px;font-weight:500;min-height:0}
+.hint{color:var(--mute);font-size:14px;margin:0}
+.drop{border:2px dashed var(--line);border-radius:16px;min-height:200px;display:grid;place-items:center;text-align:center;padding:12px;cursor:pointer;background:var(--bg);overflow:hidden}
+.drop img{width:100%;max-height:340px;object-fit:cover;border-radius:12px}
+.row{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px;flex-wrap:wrap}
+.row img{width:64px;height:64px;border-radius:12px;object-fit:cover;background:var(--line)}
+.row .t{flex:1;min-width:140px;overflow-wrap:anywhere}.row .t b{display:block}
+.rows{display:grid;gap:10px}
+.bar{display:flex;gap:10px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:14px;z-index:20;max-width:92vw;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.alert-banner{position:fixed;top:68px;left:50%;transform:translateX(-50%);background:var(--gold);color:#1b1405;padding:14px 20px;border-radius:16px;z-index:25;max-width:92vw;width:440px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 12px 30px rgba(0,0,0,.3);font-weight:700}
+.alert-banner button{background:#1b1405;color:#fff;border:0;border-radius:10px;padding:6px 12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.stats-box{background:var(--card);border:1.5px solid var(--brand2);border-radius:18px;padding:16px;margin-bottom:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.stat-item{background:var(--bg);padding:12px;border-radius:12px;text-align:center}
+.stat-item b{display:block;font-size:26px;color:var(--brand2)}
+.stat-item span{font-size:13px;color:var(--mute);font-weight:600}
+.live-dot{display:inline-block;width:9px;height:9px;background:var(--wa);border-radius:50%;margin-right:6px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:grid;place-items:center;z-index:30;padding:16px}
+.modal .panel{margin:0}
+footer{text-align:center;color:var(--mute);font-size:14px;padding:10px 16px calc(30px + env(safe-area-inset-bottom,0px))}
+footer a{color:var(--mute)}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+<a class="brand" href="#inicio"><span class="logo">JR</span><b>JR_tienda</b></a>
+<nav class="nav" id="nav"></nav></div></header>
+<main id="app"></main>
+<footer id="foot"></footer>
+<script id="jr-data" type="application/json">[]</script>
+<script>
+const WA="50577502463",MAIL="jrtienda655@gmail.com",K={p:"jr_productos",a:"jr_admin",seen:"jr_seen_ids",vis:"jr_vis_log"};
+const $=s=>document.querySelector(s),app=$("#app");
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"'"}[c]));
+const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
+set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
+let items=[],draft=null,deferred=null,curQty=1;
+
+function logged(){try{return sessionStorage.getItem("jr_ses")==="1"}catch(e){return false}}
+
+try{
+  const embedded=JSON.parse(document.getElementById("jr-data").textContent)||[];
+  const local=ls.get(K.p,null);
+  items=(logged()&&local)?local:(embedded.length?embedded:(local||[]));
+}catch(e){}
+
+const money=n=>"C$ "+Number(n).toLocaleString("es-NI",{minimumFractionDigits:0,maximumFractionDigits:2});
+
+function calcPromo(price,qty){
+  const q=Math.max(1,Number(qty)||1);
+  const sub=price*q;
+  let rate=0;
+  if(q>=4)rate=0.25;
+  else if(q>=2)rate=0.10;
+  const disc=sub*rate;
+  return{qty:q,sub,rate,disc,total:sub-disc};
+}
+
+function waLink(p,qty=1){
+  if(!p)return"https://wa.me/"+WA+"?text="+encodeURIComponent("Hola JR_tienda, quiero consultar el catálogo.");
+  const c=calcPromo(p.price,qty);
+  const promoTxt=c.rate>0?` (Con ${Math.round(c.rate*100)}% de descuento aplicado: Total ${money(c.total)})`:` (Total: ${money(c.total)})`;
+  return"https://wa.me/"+WA+"?text="+encodeURIComponent(`Hola JR_tienda, quiero pedir ${c.qty} unidad${c.qty>1?"es":""} de: ${p.name}${promoTxt}. ¿Sigue disponible?`);
+}
+
+function toast(m){
+  const t=document.createElement("div");t.className="toast";t.setAttribute("role","status");t.textContent=m;
+  document.body.appendChild(t);setTimeout(()=>t.remove(),3200);
+}
+
+function showNewProductAlert(prod){
+  const old=$(".alert-banner");if(old)old.remove();
+  const b=document.createElement("div");b.className="alert-banner";
+  b.innerHTML=`<div>¡Nuevo producto disponible!<br><small>${esc(prod.name)} · ${money(prod.price)}</small></div><button id="al-go">Ver ahora</button>`;
+  document.body.appendChild(b);
+  b.querySelector("#al-go").onclick=()=>{b.remove();location.hash="#p/"+prod.id};
+  setTimeout(()=>{if(b.parentNode)b.remove()},7000);
+}
+
+function checkNewProducts(){
+  if(!items.length)return;
+  const seen=ls.get(K.seen,[]);
+  const unseen=items.filter(x=>!seen.includes(x.id));
+  if(unseen.length){
+    showNewProductAlert(unseen[unseen.length-1]);
+    ls.set(K.seen,items.map(x=>x.id));
+  }
+}
+
+// Rastreo de visitantes en tiempo real (pestanas activas + historial de sesiones)
+const sid="v_"+Math.random().toString(36).slice(2,10);
+let activePeers=new Set([sid]);
+let bc=null;
+try{
+  bc=new BroadcastChannel("jr_tienda_live");
+  bc.onmessage=e=>{
+    if(!e.data)return;
+    if(e.data.type==="ping"){activePeers.add(e.data.sid);bc.postMessage({type:"pong",sid})}
+    else if(e.data.type==="pong"){activePeers.add(e.data.sid)}
+    else if(e.data.type==="bye"){activePeers.delete(e.data.sid)}
+    else if(e.data.type==="new_item"&&e.data.item){
+      if(!items.some(x=>x.id===e.data.item.id)){items.push(e.data.item);route()}
+      showNewProductAlert(e.data.item);
+    }
+    if(location.hash==="#gestion"&&logged())updateStatsUI();
+  };
+  bc.postMessage({type:"ping",sid});
+}catch(e){}
+
+function trackVisit(){
+  const now=Date.now();
+  let log=ls.get(K.vis,{total:0,active:{}});
+  if(!sessionStorage.getItem("jr_counted")){
+    log.total=(log.total||0)+1;
+    sessionStorage.setItem("jr_counted","1");
+  }
+  log.active[sid]=now;
+  Object.keys(log.active).forEach(k=>{if(now-log.active[k]>45000)delete log.active[k]});
+  ls.set(K.vis,log);
+}
+trackVisit();
+setInterval(()=>{trackVisit();if(bc)bc.postMessage({type:"ping",sid});if(location.hash==="#gestion"&&logged())updateStatsUI()},15000);
+window.addEventListener("beforeunload",()=>{if(bc)bc.postMessage({type:"bye",sid})});
+
+function getVisitorStats(){
+  const now=Date.now();
+  const log=ls.get(K.vis,{total:1,active:{}});
+  const storageActive=Object.keys(log.active||{}).filter(k=>now-log.active[k]<=45000).length;
+  const liveCount=Math.max(1,activePeers.size,storageActive);
+  return{live:liveCount,total:Math.max(liveCount,log.total||1)};
+}
+
+function updateStatsUI(){
+  const el=$("#live-cnt"),tot=$("#tot-cnt");
+  if(el&&tot){const s=getVisitorStats();el.textContent=s.live;tot.textContent=s.total}
+}
+
+async function persist(next,addedItem=null){
+  if(!ls.set(K.p,next)){
+    toast("No se pudo guardar. La foto es muy pesada o no hay espacio.");
+    return false;
+  }
+  ls.set(K.seen,next.map(x=>x.id));
+  if(addedItem){
+    showNewProductAlert(addedItem);
+    try{if(bc)bc.postMessage({type:"new_item",item:addedItem})}catch(e){}
+  }else{
+    toast("Catálogo actualizado correctamente");
+  }
+  return true;
+}
+
+function exportarHTML(){
+  const c=document.documentElement.cloneNode(true);
+  ["#app","#nav","#foot"].forEach(s=>c.querySelector(s).replaceChildren());
+  c.querySelectorAll(".toast,.modal,.alert-banner").forEach(n=>n.remove());
+  c.querySelector("#jr-data").textContent=JSON.stringify(items).replace(/</g,"\u003c");
+  const blob=new Blob(["<!DOCTYPE html>
+"+c.outerHTML],{type:"text/html;charset=utf-8"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="index.html";
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast("Descargando index.html listo para publicar");
+}
+
+async function sha(s){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("jr:"+s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}
+function contactWA(p,qty=1){
+  const c=p?calcPromo(p.price,qty):null;
+  const m=document.createElement("div");m.className="modal";
+  m.innerHTML=`<div class="panel" role="dialog" aria-modal="true"><h3>Abriendo WhatsApp</h3><p class="hint">Escribirás al +505 7750 2463${p?` sobre <b>${esc(p.name)}</b> (${c.qty} unid. · Total <b>${money(c.total)}</b>)`:""}.</p><a class="btn wa" href="${waLink(p,qty)}" target="_blank" rel="noopener" id="go">Abrir WhatsApp</a><button class="btn line" id="no">Cancelar</button></div>`;
+  document.body.appendChild(m);
+  m.querySelector("#go").onclick=()=>setTimeout(()=>m.remove(),300);m.querySelector("#no").onclick=()=>m.remove();m.querySelector("#go").focus();
+}
+const waBtn=(p,cls="",qty=1)=>`<button class="btn wa ${cls}" data-wa="${p?p.id:""}" data-qty="${qty}">Pedir por WhatsApp</button>`;
+function card(p,isNew=false){return`<article class="card">${isNew?`<span class="badge-new">Nuevo</span>`:""}<img class="ph" src="${p.img}" alt="${esc(p.name)}" loading="lazy" data-open="${p.id}"><div class="bd"><h3>${esc(p.name)}</h3><div class="price">${money(p.price)}</div><div class="sp">${esc(p.specs)}</div>${waBtn(p,"sm",1)}</div></article>`}
+function nav(){
+  $("#nav").innerHTML=`<button id="inst">Instalar app</button>`+`<a href="#catalogo">Catálogo</a>`+(logged()?`<a href="#gestion">Gestión</a><button id="out">Salir</button>`:"");
+  $("#foot").innerHTML=`© JR_tienda · <a href="#acceso">Acceso administrativo</a>`;
+  const i=$("#inst");if(i)i.onclick=async()=>{if(deferred){deferred.prompt();await deferred.userChoice;deferred=null;nav()}else{const m=document.createElement("div");m.className="modal";m.innerHTML=`<div class="panel" role="dialog" aria-modal="true"><h3>Instalar JR_tienda</h3><p class="hint"><b>Android (Chrome):</b> menú ⋮ y luego “Instalar app” o “Añadir a pantalla de inicio”.<br><b>iPhone (Safari):</b> botón Compartir y luego “Añadir a pantalla de inicio”.</p><button class="btn main" id="ok">Entendido</button></div>`;document.body.appendChild(m);m.querySelector("#ok").onclick=()=>m.remove()}};
+  const o=$("#out");if(o)o.onclick=()=>{try{sessionStorage.removeItem("jr_ses")}catch(e){}toast("Sesión cerrada");location.hash="#inicio"};
+}
+function vInicio(){
+  const rec=items.slice(-4).reverse();
+  app.innerHTML=`<div class="promo-bar"><span>🔥 Promoción automática: <b>10% de descuento</b> llevando 2 unidades · <b>25% de descuento</b> llevando 4 o más.</span></div>
+  <section class="hero"><span class="logo">JR</span><h1>JR_tienda</h1><p>Mira nuestros productos con foto, precio y detalles. Cuando algo te guste, escríbenos por WhatsApp.</p>
+  <div class="acts"><a class="btn main" href="#catalogo">Mostrar catálogo</a>${waBtn(null)}<small>WhatsApp: +505 7750 2463</small></div>
+  <div class="acts" id="ios" hidden><small>En iPhone: pulsa Compartir y luego “Añadir a pantalla de inicio”.</small></div></section>`+
+  (rec.length?`<div class="sec"><div><h2>Novedades</h2></div><a class="btn line sm" href="#catalogo">Ver todo</a></div><div class="grid">${rec.map((p,idx)=>card(p,idx===0)).join("")}</div>`:"");
+  if(/iphone|ipad/i.test(navigator.userAgent)&&!navigator.standalone)$("#ios").hidden=false;
+}
+function vCatalogo(){
+  app.innerHTML=`<div class="promo-bar"><span>🏷️ <b>Descuentos por cantidad:</b> 2 unidades = <b>10% OFF</b> · 4 o más unidades = <b>25% OFF</b></span></div>
+  <div class="sec"><div><h2>Catálogo</h2><p>${items.length?items.length+" producto"+(items.length>1?"s":""):"Pronto verás productos aquí"}</p></div></div>`+
+  (items.length?`<div class="grid">${[...items].reverse().map((p,idx)=>card(p,idx===0)).join("")}</div>`:`<div class="empty"><h3>Estamos preparando el catálogo</h3><p class="hint">Mientras tanto, escríbenos y te mostramos lo disponible.</p>${waBtn(null)}</div>`);
+}
+function vDetalle(id){
+  const p=items.find(x=>x.id===id);
+  if(!p){app.innerHTML=`<div class="empty"><h3>Este producto ya no está disponible</h3><a class="btn main" href="#catalogo">Volver al catálogo</a></div>`;return}
+  curQty=1;
+  const renderPrice=()=>{
+    const c=calcPromo(p.price,curQty);
+    $("#q-val").textContent=c.qty;
+    $("#tot-box").innerHTML=c.rate>0
+      ?`<div class="disc-tag">¡${Math.round(c.rate*100)}% de descuento aplicado! (Ahorras ${money(c.disc)})</div><div style="margin-top:6px"><s style="color:var(--mute)">${money(c.sub)}</s> <b style="font-size:24px;color:var(--wa)">${money(c.total)}</b></div>`
+      :`<div>Total: <b style="font-size:24px">${money(c.total)}</b> <span class="hint">(Lleva 2 para 10% OFF o 4 para 25% OFF)</span></div>`;
+    $("#det-wa").innerHTML=waBtn(p,"",c.qty);
+  };
+  app.innerHTML=`<p><a href="#catalogo">← Catálogo</a></p><div class="detail"><img src="${p.img}" alt="${esc(p.name)}"><div style="display:grid;gap:14px"><h1>${esc(p.name)}</h1><div class="price" style="font-size:30px">${money(p.price)} <small style="font-size:14px;font-weight:500;color:var(--mute)">c/u</small></div>
+  <div class="qty-box"><label>Selecciona la cantidad</label><div class="qty-ctrl"><button type="button" id="q-minus">−</button><span id="q-val">1</span><button type="button" id="q-plus">+</button></div><div id="tot-box"></div></div>
+  <h3 style="font-size:16px">Especificaciones</h3><div class="specs">${esc(p.specs)}</div><div class="stick" id="det-wa"></div></div></div>`;
+  renderPrice();
+  $("#q-minus").onclick=()=>{if(curQty>1){curQty--;renderPrice()}};
+  $("#q-plus").onclick=()=>{curQty++;renderPrice()};
+}
+function vAcceso(){
+  if(logged()){location.hash="#gestion";return}
+  const a=ls.get(K.a,null);
+  app.innerHTML=`<form class="panel" id="f" novalidate><h2>Acceso administrativo</h2><p class="hint">${a?"Escribe tu contraseña para gestionar el catálogo.":"Primera vez: elige una contraseña. La usarás cada vez que entres."}</p>
+  <label>Correo<input type="email" id="em" value="${MAIL}" autocomplete="username"></label>
+  <label>${a?"Contraseña":"Crea tu contraseña (mínimo 6 caracteres)"}<input type="password" id="pw" autocomplete="${a?"current-password":"new-password"}"></label>
+  <div class="err" id="er" role="alert"></div><button class="btn main" type="submit">${a?"Iniciar sesión":"Guardar contraseña y entrar"}</button></form>`;
+  $("#f").onsubmit=async e=>{e.preventDefault();const em=$("#em").value.trim().toLowerCase(),pw=$("#pw").value,er=$("#er");
+    if(em!==MAIL){er.textContent="Este correo no tiene acceso. Usa el correo de JR_tienda.";return}
+    if(pw.length<6){er.textContent=a?"Escribe tu contraseña.":"La contraseña necesita al menos 6 caracteres.";return}
+    const h=await sha(pw);
+    if(!a){if(!ls.set(K.a,{h})){er.textContent="No se pudo guardar. Revisa el espacio del navegador.";return}}
+    else if(a.h!==h){er.textContent="Contraseña incorrecta. Inténtalo de nuevo.";return}
+    try{sessionStorage.setItem("jr_ses","1")}catch(x){}toast("Bienvenida a la gestión");location.hash="#gestion"};
+}
+function vGestion(){
+  const stats=getVisitorStats();
+  app.innerHTML=`<div class="stats-box">
+    <div class="stat-item"><b id="live-cnt">${stats.live}</b><span><i class="live-dot"></i>Visitantes en tiempo real</span></div>
+    <div class="stat-item"><b id="tot-cnt">${stats.total}</b><span>Visitas registradas</span></div>
+    <div class="stat-item"><b>${items.length}</b><span>Productos activos</span></div>
+  </div>
+  <div class="sec"><div><h2>Gestión de productos</h2><p>Añade productos y descarga el archivo actualizado para subirlo a Netlify/Cloudflare.</p></div><div class="bar"><a class="btn main" href="#producto/nuevo">Añadir producto</a><button class="btn wa" id="exp">Descargar catálogo listo</button></div></div>`+
+  (items.length?`<div class="rows">${[...items].reverse().map(p=>`<div class="row"><img src="${p.img}" alt=""><div class="t"><b>${esc(p.name)}</b>${money(p.price)}</div><a class="btn line sm" href="#p/${p.id}">Ver</a><a class="btn line sm" href="#producto/${p.id}">Editar</a><button class="btn danger sm" data-del="${p.id}">Retirar</button></div>`).join("")}</div>`:`<div class="empty"><h3>Aún no hay productos</h3><p class="hint">Añade el primero con su foto, nombre, especificaciones y valor.</p><a class="btn main" href="#producto/nuevo">Añadir producto</a></div>`);
+  const exp=$("#exp");if(exp)exp.onclick=exportarHTML;
+}
+function shrink(file){return new Promise((ok,no)=>{const r=new FileReader();r.onerror=no;r.onload=()=>{const i=new Image();i.onerror=no;i.onload=()=>{const s=Math.min(1,700/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=i.width*s;c.height=i.height*s;c.getContext("2d").drawImage(i,0,0,c.width,c.height);ok(c.toDataURL("image/jpeg",.75))};i.src=r.result};r.readAsDataURL(file)})}
+function vForm(id){
+  const ed=items.find(x=>x.id===id);
+  if(!draft||draft.id!==(ed?ed.id:"nuevo"))draft=ed?{...ed}:{id:"nuevo",img:"",name:"",specs:"",price:""};
+  app.innerHTML=`<form class="panel" id="f" novalidate style="max-width:640px"><h2>${ed?"Editar producto":"Añadir producto"}</h2>
+  <label>Foto del producto<div class="drop" id="dp" tabindex="0" role="button">${draft.img?`<img src="${draft.img}" alt="Foto elegida">`:`<span><b>Toca para elegir tu foto</b><br><span class="hint">Usa una foto real del artículo</span></span>`}</div></label>
+  <input type="file" id="fi" accept="image/*" hidden><div class="err" id="e-img"></div>
+  <label>Nombre del producto<input type="text" id="nm" value="${esc(draft.name)}" maxlength="120"></label><div class="err" id="e-nm"></div>
+  <label>Especificaciones<textarea id="sp" maxlength="1000" placeholder="Material, tamaño, color, detalles…">${esc(draft.specs)}</textarea></label><div class="err" id="e-sp"></div>
+  <label>Valor (C$)<input type="number" id="pr" inputmode="decimal" min="0" step="any" value="${esc(draft.price)}"></label><div class="err" id="e-pr"></div>
+  <div class="bar"><button class="btn main" type="submit">Guardar producto</button><a class="btn line" href="#gestion">Cancelar</a></div></form>`;
+  const fi=$("#fi");$("#dp").onclick=()=>fi.click();$("#dp").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();fi.click()}};
+  fi.onchange=async()=>{const f=fi.files[0];if(!f)return;draft.name=$("#nm").value;draft.specs=$("#sp").value;draft.price=$("#pr").value;
+    try{draft.img=await shrink(f);route()}catch(e){$("#e-img").textContent="No pudimos leer esa foto. Prueba con otra."}};
+  $("#f").onsubmit=async e=>{e.preventDefault();const v={name:$("#nm").value.trim(),specs:$("#sp").value.trim(),price:$("#pr").value};let bad=0;
+    const E=(k,m)=>{$("#e-"+k).textContent=m;bad=1};["img","nm","sp","pr"].forEach(k=>$("#e-"+k).textContent="");
+    if(!draft.img)E("img","Falta la foto del producto.");if(!v.name)E("nm","Escribe el nombre del producto.");if(!v.specs)E("sp","Añade las especificaciones.");
+    if(v.price===""||isNaN(+v.price)||+v.price<0)E("pr","Escribe un valor válido, solo números.");if(bad)return;
+    const p={id:ed?ed.id:"p"+Date.now().toString(36),img:draft.img,name:v.name,specs:v.specs,price:+v.price};
+    const next=ed?items.map(x=>x.id===p.id?p:x):[...items,p];
+    const ok=await persist(next,ed?null:p);if(!ok)return;items=next;draft=null;location.hash="#gestion"};
+}
+function route(){
+  const h=location.hash.slice(1)||"inicio",[r,a]=h.split("/");window.scrollTo(0,0);
+  const prot=["gestion","producto"].includes(r);
+  if(prot&&!logged()){location.hash="#acceso";return}
+  ({inicio:vInicio,catalogo:vCatalogo,p:()=>vDetalle(a),acceso:vAcceso,gestion:vGestion,producto:()=>vForm(a)}[r]||vInicio)();nav();
+}
+document.addEventListener("click",e=>{
+  const w=e.target.closest("[data-wa]"),o=e.target.closest("[data-open]"),d=e.target.closest("[data-del]");
+  if(w)contactWA(items.find(x=>x.id===w.dataset.wa),Number(w.dataset.qty)||1);
+  else if(o)location.hash="#p/"+o.dataset.open;
+  else if(d&&logged()){const p=items.find(x=>x.id===d.dataset.del);const m=document.createElement("div");m.className="modal";
+    m.innerHTML=`<div class="panel" role="dialog" aria-modal="true"><h3>¿Retirar este producto?</h3><p class="hint">“${esc(p.name)}” dejará de aparecer en el catálogo público.</p><button class="btn danger" id="y">Sí, retirar</button><button class="btn line" id="n">Cancelar</button></div>`;
+    document.body.appendChild(m);m.querySelector("#n").onclick=()=>m.remove();
+    m.querySelector("#y").onclick=async()=>{const n=items.filter(x=>x.id!==p.id);m.remove();if(await persist(n)){items=n;route()}}}
+});
+addEventListener("hashchange",route);
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferred=e;nav()});
+route();
+checkNewProducts();
+</script>
+</body>
+</html>
